@@ -1,0 +1,48 @@
+import Head from "next/head";
+import Link from "next/link";
+import { getPokemonData } from "../../../utils/get-pokemon";
+
+interface Props {
+  data: any;
+}
+export default function Pokemon({ data }: Props) {
+  return (
+    <div className="p-4 max-w-sm mx-auto">
+      <Head>
+        <title>Danh sách pokemon</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      <div className="grid gap-4">
+        <div className="text-4xl font-bold">Pokemon list</div>
+        <div className="grid gap-4 grid-cols-2">
+          {data.results.map((i) => (
+            <Link key={i.id} href={`isr/${i.id}`}>
+              <a className="text-center border rounded grid gap-2 p-4 items-center justify-center">
+                <img src={i.sprites.front_default} />
+                <div className="font-bold">{i.name}</div>
+              </a>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// export async function getStaticProps() {
+//   // Fetch data from external API
+
+//   const data = await getPokemonData(1);
+
+//   // Pass data to the page via props
+//   return { props: { data } };
+// }
+
+export async function getServerSideProps() {
+  // Fetch data from external API
+
+  const data = await getPokemonData(1);
+
+  // Pass data to the page via props
+  return { props: { data } };
+}
