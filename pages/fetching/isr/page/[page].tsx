@@ -1,17 +1,19 @@
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Pagination } from "../../../components";
-import { getPokemonData } from "../../../utils/get-pokemon";
+import { Pagination } from "../../../../components";
+import { getPokemonData } from "../../../../utils/get-pokemon";
 
 interface Props {
   data: any;
-  page: number;
+  page: string;
 }
 
 export default function Pokemon({ data, page }: Props) {
   const router = useRouter();
+
   const handleChangePage = (value: number) => {
     router.push(`/fetching/isr/page/${value.toString()}`);
   };
@@ -26,36 +28,37 @@ export default function Pokemon({ data, page }: Props) {
         <div className="text-4xl font-bold">Pokemon list</div>
         <div className="grid gap-4 grid-cols-2">
           {data.results.map((i) => (
-            <Link key={i.id} href={`isr/${i.id}`}>
+            <Link key={i.id} href={`/fetching/isr/${i.id}`}>
               <a className="text-center border rounded grid gap-2 p-4 items-center justify-center">
-                <img src={i.sprites.front_default} />
+                <Image
+                  width={96}
+                  height={96}
+                  alt={i.name}
+                  src={i.sprites.front_default}
+                />
                 <div className="font-bold">{i.name}</div>
               </a>
             </Link>
           ))}
         </div>
 
-        <Pagination page={page} total={data.count} onChange={handleChangePage} />
+        <Pagination
+          page={+page}
+          total={data.count}
+          onChange={handleChangePage}
+        />
       </div>
     </div>
   );
 }
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   // Fetch data from external API
 
   const page = ctx.params?.page || 1;
+
   const data = await getPokemonData(+page);
 
   // Pass data to the page via props
   return { props: { data, page } };
 };
-
-// export async function getServerSideProps() {
-//   // Fetch data from external API
-
-//   const data = await getPokemonData(1);
-
-//   // Pass data to the page via props
-//   return { props: { data } };
-// }

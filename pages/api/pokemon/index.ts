@@ -1,9 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getPokemonData } from "../../../utils/get-pokemon";
 
-const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const data = await getPokemonData(1);
+    console.log({ req: req.query });
+
+    const page = +req.query?.page || 1;
+
+    console.log({ page });
+
+    const data = await getPokemonData(page);
 
     res.status(200).json(data);
   } catch (err: any) {

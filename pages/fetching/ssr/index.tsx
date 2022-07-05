@@ -1,11 +1,22 @@
-import Link from "next/link";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { Pagination } from "../../../components";
 import { getPokemonData } from "../../../utils/get-pokemon";
 
 interface Props {
   data: any;
+page: number
 }
-export default function Pokemon({ data }: Props) {
+
+export default function Pokemon({ data, page }: Props) {
+  const router = useRouter();
+
+  const handleChangePage = (value: number) => {
+    router.push(`/fetching/ssr/page/${value.toString()}`);
+  };
+
   return (
     <div className="p-4 max-w-sm mx-auto">
       <Head>
@@ -24,16 +35,26 @@ export default function Pokemon({ data }: Props) {
             </Link>
           ))}
         </div>
+
+        <Pagination
+          page={page}
+          total={data.count}
+          onChange={handleChangePage}
+        />
       </div>
     </div>
   );
 }
 
-export async function getServerSideProps() {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   // Fetch data from external API
+
+  const page = ctx.params?.page || 1;
+
+  console.log({ page });
 
   const data = await getPokemonData(1);
 
   // Pass data to the page via props
-  return { props: { data } };
-}
+  return { props: { data, page } };
+};

@@ -1,7 +1,7 @@
 export async function getPathPokemon(page: number) {
-  return fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=20").then(
-    (res) => res.json()
-  );
+  return fetch(
+    `https://pokeapi.co/api/v2/pokemon?offset=${(page - 1) * 20}&limit=20`
+  ).then((res) => res.json());
 }
 
 export async function getPokemonDetail(url: string) {
@@ -9,7 +9,7 @@ export async function getPokemonDetail(url: string) {
 }
 
 export async function getPokemonData(page: number) {
-  const pokemonList = await getPathPokemon((page - 1) * 20);
+  const pokemonList = await getPathPokemon(page);
 
   console.log(pokemonList);
 

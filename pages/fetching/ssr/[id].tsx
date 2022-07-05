@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getPokemonDetail } from "../../../utils/get-pokemon";
 import { PokemonDetail } from "../../../components/page-components";
 import Head from "next/head";
+import { Back } from "../../../components/commons/back/back";
 
 interface Props {
   data: any;
@@ -15,9 +16,10 @@ export default function PokemonDetailPage({ data }: Props) {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <div className="p-4">
-        <Link href=".">
-          <a className="mr-2">Back</a>
-        </Link>
+        <Back />
+        {/* <Link href="."> */}
+        {/*   <a className="mr-2">Back</a> */}
+        {/* </Link> */}
       </div>
 
       <PokemonDetail pokemon={data} />

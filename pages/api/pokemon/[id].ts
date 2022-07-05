@@ -3,7 +3,6 @@ import { getPokemonData, getPokemonDetail } from "../../../utils/get-pokemon";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    console.log({ req });
     const url = `https://pokeapi.co/api/v2/pokemon/${req.query.id}`;
     const data = await getPokemonDetail(url);
     // const data = await getPokemonData(1);

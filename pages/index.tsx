@@ -1,11 +1,17 @@
 import Link from "next/link";
 
 const IndexPage = () => (
-  <p>
-    <Link href="/training">
-      <a>Training</a>
+  <div>
+    <div>
+      <Link href="/training">
+        <a>Training</a>
+      </Link>
+    </div>
+
+    <Link href="/example">
+      <a>Examples</a>
     </Link>
-  </p>
+  </div>
 );
 
 export default IndexPage;
